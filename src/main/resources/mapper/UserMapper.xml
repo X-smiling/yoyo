@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.yoyo.mapper.UserMapper">
+
+
+    <insert id="addUser">
+        insert into user (username, password, name, phone, address, status)
+        VALUES (#{username}, #{password},#{name},#{phone},#{address},#{status})
+    </insert>
+    <insert id="addGoods">
+        insert into goods(name, price, intro, cover, image1, image2, stock, type_id)
+        values (#{name},#{price},#{intro},#{cover},#{image1},#{image2},#{stock},#{typeId});
+    </insert>
+
+    <!--   -->
+    <select id="findUserByUsername" resultType="com.example.yoyo.pojo.User">
+        select * from user where username = #{username}
+    </select>
+</mapper>

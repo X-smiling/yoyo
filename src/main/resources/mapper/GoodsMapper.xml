@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.yoyo.mapper.GoodsMapper">
+    <update id="updateGoods" parameterType="Goods">
+        update goods
+        <set>
+            name=#{name},
+            price=#{price},
+            intro=#{intro},
+            <if test="cover!=null">
+                cover=#{cover},
+            </if>
+            <if test="image1!=null">
+                image1=#{image1},
+            </if>
+            <if test="image2!=null">
+                image2=#{image2},
+            </if>
+            stock=#{stock},
+            type_id=#{typeId},
+            status=1
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteGoods">
+        update goods set status = 0 where id = #{goodsId}
+    </delete>
+    <insert id="addGoods" useGeneratedKeys="true" keyProperty="id">
+        insert into goods (name,price,intro,cover,image1,image2,stock,type_id,status) values (#{name},#{price},#{intro},#{cover},#{image1},#{image2},#{stock},#{typeId},1)
+    </insert>
+
+    <select id="getGoodsByList" resultType="com.example.yoyo.pojo.Goods">
+        select * from goods where id in (select good_id from top where type = #{type})
+    </select>
+    <select id="getGoodsListPageByTopTypeId" resultType="com.example.yoyo.pojo.Goods">
+        select * from goods where id in (select good_id from top where type = #{typeId})
+            limit #{page} ,#{pageSize}
+    </select>
+    <select id="getGoodsListPageByTypeId" resultType="com.example.yoyo.pojo.Goods">
+        select * from goods where type_id = #{typeId}
+        limit #{page} ,#{pageSize}
+    </select>
+    <select id="getGoodsTotalByTypeId" resultType="java.lang.Integer">
+        select count(id) from goods where type_id = #{typeId}
+    </select>
+    <select id="getGoodsListByKye" resultType="com.example.yoyo.pojo.Goods">
+        select * from goods where name like concat('%',#{name},'%') order by id desc limit #{page} ,#{pageSize}
+    </select>
+    <select id="getGoodsInfoById" resultType="com.example.yoyo.pojo.Goods">
+        select * from goods where id = #{goodsId}
+    </select>
+    <select id="getGoodsList" resultType="com.example.yoyo.pojo.Goods">
+        select * from goods where id in
+              (select good_id from top where type = #{status})
+        limit #{page} ,#{size}
+    </select>
+    <select id="getGoodsList2" resultType="com.example.yoyo.pojo.Goods">
+        select * from goods
+        limit #{page} ,#{size}
+    </select>
+</mapper>
